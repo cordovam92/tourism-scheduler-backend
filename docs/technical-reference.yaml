@@ -1,0 +1,230 @@
+---
+swagger: "2.0"
+info:
+  description: "This API is used to _________"
+  version: "1.0.0"
+  title: "CSCI 602 REST API"
+  contact:
+    name: "John Ravan"
+    url: "https://theravans.com/"
+    email: "ravanj1@citadel.edu"
+  license:
+    name: "MIT License"
+    url: "https://www.mit.edu/"
+host: "localhost:5000"
+basePath: "/"
+tags:
+- name: "status-endpoints"
+  description: "Status Endpoints"
+paths:
+  /health:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "health"
+      operationId: "healthUsingGET"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /info:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "info"
+      operationId: "infoUsingGET"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /person:
+    post:
+      tags:
+      - "status-endpoints"
+      summary: "Creates a person object"
+      operationId: "createAPersonUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "simpleObject"
+        description: "Simple object"
+        required: true
+        schema:
+          type: "object"
+          additionalProperties:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "The resource was not found"
+        "422":
+          description: "Cannot process request"
+  /person/{id}:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "getPerson"
+      operationId: "getPersonUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /whatsapp/send:
+    post:
+      tags:
+      - "status-endpoints"
+      summary: "Sends data to Whatsapp via Twillio"
+      operationId: "sendViaWhatsappUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "simpleObject"
+        description: "Simple object"
+        required: true
+        schema:
+          type: "object"
+          additionalProperties:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Message"
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "The resource was not found"
+        "422":
+          description: "Cannot process request"
+definitions:
+  Message:
+    type: "object"
+    properties:
+      accountSid:
+        type: "string"
+      apiVersion:
+        type: "string"
+      body:
+        type: "string"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      dateSent:
+        type: "string"
+        format: "date-time"
+      dateUpdated:
+        type: "string"
+        format: "date-time"
+      direction:
+        type: "string"
+        enum:
+        - "INBOUND"
+        - "OUTBOUND_API"
+        - "OUTBOUND_CALL"
+        - "OUTBOUND_REPLY"
+      errorCode:
+        type: "integer"
+        format: "int32"
+      errorMessage:
+        type: "string"
+      from:
+        $ref: "#/definitions/PhoneNumber"
+      messagingServiceSid:
+        type: "string"
+      numMedia:
+        type: "string"
+      numSegments:
+        type: "string"
+      price:
+        type: "string"
+      priceUnit:
+        type: "number"
+      sid:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+        - "ACCEPTED"
+        - "CANCELED"
+        - "DELIVERED"
+        - "FAILED"
+        - "PARTIALLY_DELIVERED"
+        - "QUEUED"
+        - "READ"
+        - "RECEIVED"
+        - "RECEIVING"
+        - "SCHEDULED"
+        - "SENDING"
+        - "SENT"
+        - "UNDELIVERED"
+      subresourceUris:
+        type: "object"
+        additionalProperties:
+          type: "string"
+      to:
+        type: "string"
+      uri:
+        type: "string"
+    title: "Message"
+  PhoneNumber:
+    type: "object"
+    properties:
+      endpoint:
+        type: "string"
+    title: "PhoneNumber"

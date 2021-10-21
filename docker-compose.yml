@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  nfl-helper-database:
+    image: postgres:9.6
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: testdb
+    ports:
+      - "5433:5432"
+    container_name: nfl-helper-database
