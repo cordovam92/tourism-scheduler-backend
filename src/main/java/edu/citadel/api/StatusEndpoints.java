@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import edu.citadel.dal.PersonRepository;
+import edu.citadel.dal.PlayerRepository;
 import edu.citadel.dal.model.Person;
+import edu.citadel.dal.model.Players;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -42,10 +44,12 @@ public class StatusEndpoints {
     private String applicationVersion;
 
     private final PersonRepository personRepository;
+    private final PlayerRepository playerRepository;
 
     @Autowired
-    public StatusEndpoints(@NonNull PersonRepository personRepository) {
+    public StatusEndpoints(@NonNull PersonRepository personRepository, @NonNull PlayerRepository playerRepository) {
         this.personRepository = personRepository;
+        this.playerRepository = playerRepository;
     }
 
     private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -108,6 +112,32 @@ public class StatusEndpoints {
 
         Map<String, String> info = new HashMap<>();
         info.put("personId", p.getId().toString());
+        return objectWriter.writeValueAsString(info);
+    }
+
+    @PostMapping(value = "/players")
+    @ApiOperation(value = "Creates a player object", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "The resource was not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 422, message = "Cannot process request")
+    }
+    )
+    public String createAPlayer(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
+                                @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
+
+        Players player = new Players();
+        player.setFirstName(hashMap.get("firstName"));
+        player.setLastName(hashMap.get("lastName"));
+        player.setTeam(hashMap.get("team"));
+        player.setPosition(hashMap.get("position"));
+        player.setGamesPlayed(Integer.parseInt(hashMap.get("gamesPlayed")));
+
+        Players p = playerRepository.save(player);
+
+        Map<String, String> info = new HashMap<>();
+        info.put("playerId", p.getId().toString());
         return objectWriter.writeValueAsString(info);
     }
 
