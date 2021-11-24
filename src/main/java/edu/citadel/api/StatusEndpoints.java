@@ -121,7 +121,8 @@ public class StatusEndpoints {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "The resource was not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 422, message = "Cannot process request")
+            @ApiResponse(code = 422, message = "Cannot process request"),
+            @ApiResponse(code = 500, message = "Database error")
     }
     )
     public String createAPlayer(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
