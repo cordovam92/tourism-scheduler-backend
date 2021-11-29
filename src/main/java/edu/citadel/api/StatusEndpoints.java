@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
+import edu.citadel.dal.PassingRepository;
 import edu.citadel.dal.PersonRepository;
 import edu.citadel.dal.PlayerRepository;
+import edu.citadel.dal.RushingRepository;
+import edu.citadel.dal.model.Passing;
 import edu.citadel.dal.model.Person;
 import edu.citadel.dal.model.Players;
+import edu.citadel.dal.model.Rushing;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -45,11 +49,16 @@ public class StatusEndpoints {
 
     private final PersonRepository personRepository;
     private final PlayerRepository playerRepository;
+    private final PassingRepository passingRepository;
+    private final RushingRepository rushingRepository;
 
     @Autowired
-    public StatusEndpoints(@NonNull PersonRepository personRepository, @NonNull PlayerRepository playerRepository) {
+    public StatusEndpoints(@NonNull PersonRepository personRepository, @NonNull PlayerRepository playerRepository,
+                           @NonNull PassingRepository passingRepository, @NonNull RushingRepository rushingRepository) {
         this.personRepository = personRepository;
         this.playerRepository = playerRepository;
+        this.passingRepository = passingRepository;
+        this.rushingRepository = rushingRepository;
     }
 
     private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -139,6 +148,65 @@ public class StatusEndpoints {
 
         Map<String, String> info = new HashMap<>();
         info.put("playerId", p.getId().toString());
+        return objectWriter.writeValueAsString(info);
+    }
+
+    @PostMapping(value = "/passing")
+    @ApiOperation(value = "Creates a passing object", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "The resource was not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 422, message = "Cannot process request"),
+            @ApiResponse(code = 500, message = "Database error")
+    }
+    )
+    public String createPassing(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
+                                @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
+
+        Passing passer = new Passing();
+        passer.setFirstName(hashMap.get("firstName"));
+        passer.setLastName(hashMap.get("lastName"));
+        passer.setPosition(hashMap.get("position"));
+        passer.setAttempts(Integer.parseInt(hashMap.get("attempts")));
+        passer.setCompletions(Integer.parseInt(hashMap.get("completions")));
+        passer.setYards(Integer.parseInt(hashMap.get("yards")));
+        passer.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
+        passer.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
+
+        Passing p = passingRepository.save(passer);
+
+        Map<String, String> info = new HashMap<>();
+        info.put("passerId", p.getId().toString());
+        return objectWriter.writeValueAsString(info);
+    }
+
+    @PostMapping(value = "/rushing")
+    @ApiOperation(value = "Creates a rushing object", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "The resource was not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 422, message = "Cannot process request"),
+            @ApiResponse(code = 500, message = "Database error")
+    }
+    )
+    public String createRushing(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
+                                @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
+
+        Rushing rusher = new Rushing();
+        rusher.setFirstName(hashMap.get("firstName"));
+        rusher.setLastName(hashMap.get("lastName"));
+        rusher.setPosition(hashMap.get("position"));
+        rusher.setAttempts(Integer.parseInt(hashMap.get("attempts")));
+        rusher.setYards(Integer.parseInt(hashMap.get("yards")));
+        rusher.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
+        rusher.setFumbles(Integer.parseInt(hashMap.get("fumbles")));
+
+        Rushing r = rushingRepository.save(rusher);
+
+        Map<String, String> info = new HashMap<>();
+        info.put("rusherId", r.getId().toString());
         return objectWriter.writeValueAsString(info);
     }
 
