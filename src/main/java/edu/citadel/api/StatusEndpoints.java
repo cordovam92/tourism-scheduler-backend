@@ -5,14 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
-import edu.citadel.dal.PassingRepository;
-import edu.citadel.dal.PersonRepository;
-import edu.citadel.dal.PlayerRepository;
-import edu.citadel.dal.RushingRepository;
-import edu.citadel.dal.model.Passing;
-import edu.citadel.dal.model.Person;
-import edu.citadel.dal.model.Players;
-import edu.citadel.dal.model.Rushing;
+import edu.citadel.dal.*;
+import edu.citadel.dal.model.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -51,14 +45,19 @@ public class StatusEndpoints {
     private final PlayerRepository playerRepository;
     private final PassingRepository passingRepository;
     private final RushingRepository rushingRepository;
+    private final ReceivingRepository receivingRepository;
+    private final DefenseRepository defenseRepository;
 
     @Autowired
     public StatusEndpoints(@NonNull PersonRepository personRepository, @NonNull PlayerRepository playerRepository,
-                           @NonNull PassingRepository passingRepository, @NonNull RushingRepository rushingRepository) {
+                           @NonNull PassingRepository passingRepository, @NonNull RushingRepository rushingRepository,
+                           @NonNull ReceivingRepository receivingRepository, @NonNull DefenseRepository defenseRepository) {
         this.personRepository = personRepository;
         this.playerRepository = playerRepository;
         this.passingRepository = passingRepository;
         this.rushingRepository = rushingRepository;
+        this.receivingRepository = receivingRepository;
+        this.defenseRepository = defenseRepository;
     }
 
     private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -125,7 +124,7 @@ public class StatusEndpoints {
     }
 
     @PostMapping(value = "/players")
-    @ApiOperation(value = "Creates a player object", response = String.class)
+    @ApiOperation(value = "Adds a player to the database", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "The resource was not found"),
@@ -152,7 +151,7 @@ public class StatusEndpoints {
     }
 
     @PostMapping(value = "/passing")
-    @ApiOperation(value = "Creates a passing object", response = String.class)
+    @ApiOperation(value = "Adds passing stats", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "The resource was not found"),
@@ -182,7 +181,7 @@ public class StatusEndpoints {
     }
 
     @PostMapping(value = "/rushing")
-    @ApiOperation(value = "Creates a rushing object", response = String.class)
+    @ApiOperation(value = "Adds rushing stats", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "The resource was not found"),
@@ -207,6 +206,66 @@ public class StatusEndpoints {
 
         Map<String, String> info = new HashMap<>();
         info.put("rusherId", r.getId().toString());
+        return objectWriter.writeValueAsString(info);
+    }
+
+    @PostMapping(value = "/receiving")
+    @ApiOperation(value = "Adds receiving stats", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "The resource was not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 422, message = "Cannot process request"),
+            @ApiResponse(code = 500, message = "Database error")
+    }
+    )
+    public String createReceiving(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
+                                @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
+
+        Receiving receiver = new Receiving();
+        receiver.setFirstName(hashMap.get("firstName"));
+        receiver.setLastName(hashMap.get("lastName"));
+        receiver.setPosition(hashMap.get("position"));
+        receiver.setReceptions(Integer.parseInt(hashMap.get("receptions")));
+        receiver.setTargets(Integer.parseInt(hashMap.get("targets")));
+        receiver.setYards(Integer.parseInt(hashMap.get("yards")));
+        receiver.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
+        receiver.setFumbles(Integer.parseInt(hashMap.get("fumbles")));
+
+        Receiving r = receivingRepository.save(receiver);
+
+        Map<String, String> info = new HashMap<>();
+        info.put("receiverId", r.getId().toString());
+        return objectWriter.writeValueAsString(info);
+    }
+
+    @PostMapping(value = "/defense")
+    @ApiOperation(value = "Adds defensive stats", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "The resource was not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 422, message = "Cannot process request"),
+            @ApiResponse(code = 500, message = "Database error")
+    }
+    )
+    public String createDefense(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
+                                  @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
+
+        Defense defender = new Defense();
+        defender.setFirstName(hashMap.get("firstName"));
+        defender.setLastName(hashMap.get("lastName"));
+        defender.setPosition(hashMap.get("position"));
+        defender.setTackles(Double.parseDouble(hashMap.get("tackles")));
+        defender.setSacks(Double.parseDouble(hashMap.get("sacks")));
+        defender.setTfl(Double.parseDouble(hashMap.get("tfl")));
+        defender.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
+        defender.setFf(Integer.parseInt(hashMap.get("ff")));
+
+        Defense d = defenseRepository.save(defender);
+
+        Map<String, String> info = new HashMap<>();
+        info.put("defenderId", d.getId().toString());
         return objectWriter.writeValueAsString(info);
     }
 
