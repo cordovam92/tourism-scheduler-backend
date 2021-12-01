@@ -290,6 +290,128 @@ public class StatusEndpoints {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
         }
     }
+
+    @GetMapping(value = "/player/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getPlayer(@PathVariable String id) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(id);
+        Players players = playerRepository.findById(idLong).orElse(null);
+
+        if (players != null) {
+            Map<String, String> playerMap = new HashMap<>();
+            playerMap.put("firstName", players.getFirstName());
+            playerMap.put("lastName", players.getLastName());
+            playerMap.put("team", players.getTeam());
+            playerMap.put("position", players.getPosition());
+            playerMap.put("gamesPlayed", String.valueOf(players.getGamesPlayed()));
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(playerMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Player not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
+
+    @GetMapping(value = "/rushing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getRushing(@PathVariable String id) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(id);
+        Rushing rusher = rushingRepository.findById(idLong).orElse(null);
+        if (rusher != null) {
+            Map<String, String> rushingMap = new HashMap<>();
+            rushingMap.put("firstName", rusher.getFirstName());
+            rushingMap.put("lastName", rusher.getLastName());
+            rushingMap.put("position", rusher.getPosition());
+            rushingMap.put("attempts", String.valueOf(rusher.getAttempts()));
+            rushingMap.put("yards", String.valueOf(rusher.getYards()));
+            rushingMap.put("touchdowns", String.valueOf(rusher.getTouchdowns()));
+            rushingMap.put("fumbles", String.valueOf(rusher.getFumbles()));
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(rushingMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Rusher not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
+
+    @GetMapping(value = "/passing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getPassing(@PathVariable String id) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(id);
+        Passing passer = passingRepository.findById(idLong).orElse(null);
+
+        if (passer != null) {
+            Map<String, String> passingMap = new HashMap<>();
+            passingMap.put("firstName", passer.getFirstName());
+            passingMap.put("lastName", passer.getLastName());
+            passingMap.put("position", passer.getPosition());
+            passingMap.put("attempts", String.valueOf(passer.getAttempts()));
+            passingMap.put("completions", String.valueOf(passer.getCompletions()));
+            passingMap.put("yards", String.valueOf(passer.getYards()));
+            passingMap.put("touchdowns", String.valueOf(passer.getTouchdowns()));
+            passingMap.put("interceptions", String.valueOf(passer.getInterceptions()));
+
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(passingMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Passer not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
+    @GetMapping(value = "/defense/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getdefense(@PathVariable String id) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(id);
+        Defense defender = defenseRepository.findById(idLong).orElse(null);
+
+        if (defender != null) {
+            Map<String, String> defenseMap = new HashMap<>();
+            defenseMap.put("firstName", defender.getFirstName());
+            defenseMap.put("lastName", defender.getLastName());
+            defenseMap.put("position", defender.getPosition());
+            defenseMap.put("tackles", String.valueOf(defender.getTackles()));
+            defenseMap.put("sacks", String.valueOf(defender.getSacks()));
+            defenseMap.put("tfl", String.valueOf(defender.getTfl()));
+            defenseMap.put("interceptions", String.valueOf(defender.getInterceptions()));
+            defenseMap.put("ff", String.valueOf(defender.getFf()));
+
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(defenseMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Defender not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
+
+    @GetMapping(value = "/receiving/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getreceiving(@PathVariable String id) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(id);
+        Receiving receiver = receivingRepository.findById(idLong).orElse(null);
+
+        if (receiver != null) {
+            Map<String, String> receivingMap = new HashMap<>();
+            receivingMap.put("firstName", receiver.getFirstName());
+            receivingMap.put("lastName", receiver.getLastName());
+            receivingMap.put("position", receiver.getPosition());
+            receivingMap.put("receptions", String.valueOf(receiver.getReceptions()));
+            receivingMap.put("targets", String.valueOf(receiver.getTargets()));
+            receivingMap.put("yards", String.valueOf(receiver.getYards()));
+            receivingMap.put("touchdowns", String.valueOf(receiver.getTouchdowns()));
+            receivingMap.put("fumbles", String.valueOf(receiver.getFumbles()));
+
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(receivingMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Receiver not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
 }
 
 
