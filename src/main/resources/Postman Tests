@@ -524,5 +524,143 @@ Defense Table
                                 "message": "Defender not found"
                             }
 
+Get Requests (Key Format)
+
+Players Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/player/firstname/T.J./lastname/Watt/position/LB
+    Expected Response Body: {
+                                "firstName": "T.J.",
+                                "lastName": "Watt",
+                                "gamesPlayed": "14",
+                                "team": "Pittsburgh Steelers",
+                                "position": "LB"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/player/firstname/T.J./secondname/Watt/team/LB
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/player/900firstname/T.J./lastname/Watt/position/QB
+    Expected Response Body: {
+                                "message": "Player not found"
+                            }
+
+Passing Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/passing/firstname/Tom/lastname/Brady/position/QB
+    Expected Response Body: {
+                                "firstName": "Tom",
+                                "lastName": "Brady",
+                                "touchdowns": "53",
+                                "completions": "482",
+                                "position": "QB",
+                                "interceptions": "15",
+                                "attempts": "748",
+                                "yards": "5694"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/passing/firstname/Tom/secondname/Brady/position/QB
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/passing/firstname/Tom/lastname/Brady/position/RB
+    Expected Response Body: {
+                                "message": "Passer not found"
+                            }
+
+Rushing Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/rushing/firstname/Derrick/lastname/Henry/position/RB
+    Expected Response Body: {
+                                "firstName": "Derrick",
+                                "lastName": "Henry",
+                                "touchdowns": "17",
+                                "fumbles": "8",
+                                "position": "RB",
+                                "attempts": "396",
+                                "yards": "2067"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/rushing/firstname/Derrick/secondname/Henry/position/RB
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/rushing/firstname/Derrick/lastname/Henry/position/C
+    Expected Response Body: {
+                                "message": "Rusher not found"
+                            }
+
+Receiving Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/receiving/firstname/Stefon/lastname/Diggs/position/WR
+    Expected Response Body: {
+                                "firstName": "Stefon",
+                                "lastName": "Diggs",
+                                "touchdowns": "20",
+                                "receptions": "147",
+                                "fumbles": "2",
+                                "position": "WR",
+                                "targets": "197",
+                                "yards": "1846"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/receiving/firstname/Stefon/secondname/Diggs/position/WR
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/receiving/firstname/Stefon/lastname/Diggs/position/K
+    Expected Response Body: {
+                                "message": "Receiver not found"
+                            }
+
+Defense Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/defense/firstname/T.J./lastname/Watt/position/LB
+    Expected Response Body: {
+                                "ff": "2",
+                                "firstName": "T.J.",
+                                "lastName": "Watt",
+                                "position": "LB",
+                                "tackles": "53.0",
+                                "tfl": "24.0",
+                                "interceptions": "1",
+                                "sacks": "15.0"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/defense/firstname/T.J./secondname/Watt/position/LB
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/defense/firstname/T.J./lastname/Watt/position/QB
+    Expected Response Body: {
+                                "message": "Defender not found"
+                            }
+
 
 
