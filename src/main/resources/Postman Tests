@@ -1,0 +1,528 @@
+NFL Helper Tests for Postman
+
+Post Requests
+
+Players Table
+
+    Test 1: Correct Format
+    Request Type: Post
+    URL: localhost:5000/players
+    Body JSON: {
+                   "firstName": "Test",
+                   "lastName": "Test",
+                   "team": "Testing Testers",
+                   "position": "TEST",
+                   "gamesPlayed": "7"
+               }
+     Expected Response Body: {
+                               "playerId" : "{id}"
+                             }
+    Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 2: Player Already Exists
+    Request Type: Post
+    URL: localhost:5000/players
+    Body JSON: {
+                       "firstName": "Test",
+                       "lastName": "Test",
+                       "team": "Testing Testers",
+                       "position": "TEST",
+                       "gamesPlayed": "7"
+                   }
+    Expected Response Body: Database error
+    Note: The test mut be run using the same body JSON as Test 1, immediately following test 1
+
+    Test 3: Bad Data Type
+    Request Type: Post
+    URL: localhost:5000/players
+    Body JSON: {
+                       "firstName": "Test",
+                       "lastName": "Test",
+                       "team": "Testing Testers",
+                       "position": "TEST",
+                       "gamesPlayed": "Test"
+                   }
+    Expected Response Body: Database Error
+
+    Test 4: Bad JSON
+    Request Type: Post
+    URL: localhost:5000/players
+    Body JSON: {
+                           "firstName": "Test",
+                           "lastName": "Test",
+                           "tem": "Testing Testers",
+                           "position": "TEST",
+                           "gamesPlayed": "Test"
+                       }
+    Expected Response Body: Database Error
+
+Passing Table
+
+Test 1: Correct Format
+    Request Type: Post
+    URL: localhost:5000/passing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "completions" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "interceptions" : "0"
+               }
+     Expected Response Body: {
+                               "passerId" : "{id}"
+                             }
+    Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 2: Player Already Exists
+    Request Type: Post
+    URL: localhost:5000/passing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "completions" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "interceptions" : "0"
+               }
+    Expected Response Body: Database error
+    Note: The test mut be run using the same body JSON as Test 1, immediately following test 1
+
+    Test 3: Player Not In Players Table
+        Request Type: Post
+        URL: localhost:5000/passing
+        Body JSON: {
+                   "firstName": "Test",
+                   "lastName" : "Test",
+                   "position" : "TESTER",
+                   "attempts" : "1",
+                   "completions" : "1",
+                   "yards" : "99",
+                   "touchdowns" : "1",
+                   "interceptions" : "0"
+                   }
+        Expected Response Body: {
+                                  "passerId" : "{id}"
+                                }
+        Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 4: Bad Data Type
+    Request Type: Post
+    URL: localhost:5000/passing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "completions" : "1",
+               "yards" : "A lot",
+               "touchdowns" : "1",
+               "interceptions" : "0"
+               }
+    Expected Response Body: Database Error
+
+    Test 5: Bad JSON
+    Request Type: Post
+    URL: localhost:5000/passing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "completions" : "1",
+               "meters" : "99",
+               "touchdowns" : "1",
+               "interceptions" : "0"
+               }
+    Expected Response Body: Database Error
+
+Rushing Table
+
+Test 1: Correct Format
+    Request Type: Post
+    URL: localhost:5000/rushing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "fumbles" : "0"
+               }
+     Expected Response Body: {
+                               "rusherId" : "{id}"
+                             }
+    Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 2: Player Already Exists
+    Request Type: Post
+    URL: localhost:5000/rushing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database error
+    Note: The test mut be run using the same body JSON as Test 1, immediately following test 1
+
+    Test 3: Player Not In Players Table
+        Request Type: Post
+        URL: localhost:5000/rushing
+        Body JSON: {
+                   "firstName": "Test",
+                   "lastName" : "Test",
+                   "position" : "TESTER",
+                   "attempts" : "1",
+                   "yards" : "99",
+                   "touchdowns" : "1",
+                   "fumbles" : "0"
+                   }
+        Expected Response Body: {
+                                  "rusherId" : "{id}"
+                                }
+        Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 4: Bad Data Type
+    Request Type: Post
+    URL: localhost:5000/rushing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "yards" : "99",
+               "touchdowns" : "1.0",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database Error
+
+    Test 5: Bad JSON
+    Request Type: Post
+    URL: localhost:5000/rushing
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "yard" : "99",
+               "touchdowns" : "1",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database Error
+
+Receiving Table
+
+Test 1: Correct Format
+    Request Type: Post
+    URL: localhost:5000/receiving
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "receptions" : "1",
+               "targets" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "fumbles" : "0"
+               }
+     Expected Response Body: {
+                               "receiverId" : "{id}"
+                             }
+    Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 2: Player Already Exists
+    Request Type: Post
+    URL: localhost:5000/receiving
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "receptions" : "1",
+               "targets" : "1",
+               "yards" : "99",
+               "touchdowns" : "1",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database error
+    Note: The test mut be run using the same body JSON as Test 1, immediately following test 1
+
+    Test 3: Player Not In Players Table
+        Request Type: Post
+        URL: localhost:5000/receiving
+        Body JSON: {
+                   "firstName": "Test",
+                   "lastName" : "Test",
+                   "position" : "TESTER",
+                   "receptions" : "1",
+                   "targets" : "1",
+                   "yards" : "99",
+                   "touchdowns" : "1",
+                   "fumbles" : "0"
+                   }
+        Expected Response Body: {
+                                  "receiverId" : "{id}"
+                                }
+        Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 4: Bad Data Type
+    Request Type: Post
+    URL: localhost:5000/receiving
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "receptions" : "1",
+               "targets" : "1",
+               "yards" : "99",
+               "touchdowns" : "One",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database Error
+
+    Test 5: Bad JSON
+    Request Type: Post
+    URL: localhost:5000/receiving
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "attempts" : "1",
+               "yard" : "99",
+               "touchups" : "1",
+               "fumbles" : "0"
+               }
+    Expected Response Body: Database Error
+
+Defense Table
+
+Test 1: Correct Format
+    Request Type: Post
+    URL: localhost:5000/defense
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "tackles" : "90",
+               "sacks" : "1",
+               "tfl" : "17",
+               "interceptions" : "5",
+               "ff" : "2"
+               }
+     Expected Response Body: {
+                               "defenderId" : "{id}"
+                             }
+    Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 2: Player Already Exists
+    Request Type: Post
+    URL: localhost:5000/defense
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "tackles" : "90",
+               "sacks" : "1",
+               "tfl" : "17",
+               "interceptions" : "5",
+               "ff" : "2"
+               }
+    Expected Response Body: Database error
+    Note: The test mut be run using the same body JSON as Test 1, immediately following test 1
+
+    Test 3: Player Not In Players Table
+        Request Type: Post
+        URL: localhost:5000/defense
+        Body JSON: {
+                   "firstName": "Test",
+                   "lastName" : "Test",
+                   "position" : "TESTER",
+                   "tackles" : "90",
+                   "sacks" : "1",
+                   "tfl" : "17",
+                   "interceptions" : "5",
+                   "ff" : "2"
+                   }
+        Expected Response Body: {
+                                  "defenderId" : "{id}"
+                                }
+        Note: The body JSON mut be changed to a new name each time the test is run
+
+    Test 4: Bad Data Type
+    Request Type: Post
+    URL: localhost:5000/defense
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "tackles" : "90",
+               "sacks" : "1",
+               "tfl" : "17000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+               "interceptions" : "5",
+               "ff" : "2"
+               }
+    Expected Response Body: Database Error
+
+    Test 5: Bad JSON
+    Request Type: Post
+    URL: localhost:5000/defense
+    Body JSON: {
+               "firstName": "Test",
+               "lastName" : "Test",
+               "position" : "TEST",
+               "tackles" : "90",
+               "sacks" : "1",
+               "tfl" : "17",
+               "interceptions" : "5",
+               "forcedfumbles" : "2"
+               }
+    Expected Response Body: Database Error
+
+Get Requests (ID Format)
+
+Players Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/player/1
+    Expected Response Body: {
+                                "firstName": "T.J.",
+                                "lastName": "Watt",
+                                "gamesPlayed": "14",
+                                "team": "Pittsburgh Steelers",
+                                "position": "LB"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/player/one
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/player/900
+    Expected Response Body: {
+                                "message": "Player not found"
+                            }
+
+Passing Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/passing/1
+    Expected Response Body: {
+                                "firstName": "Tom",
+                                "lastName": "Brady",
+                                "touchdowns": "53",
+                                "completions": "482",
+                                "position": "QB",
+                                "interceptions": "15",
+                                "attempts": "748",
+                                "yards": "5694"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/passing/one
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/passing/900
+    Expected Response Body: {
+                                "message": "Passer not found"
+                            }
+
+Rushing Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/rushing/1
+    Expected Response Body: {
+                                "firstName": "Derrick",
+                                "lastName": "Henry",
+                                "touchdowns": "17",
+                                "fumbles": "8",
+                                "position": "RB",
+                                "attempts": "396",
+                                "yards": "2067"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/rushing/one
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/rushing/900
+    Expected Response Body: {
+                                "message": "Rusher not found"
+                            }
+
+Receiving Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/receiving/1
+    Expected Response Body: {
+                                "firstName": "Stefon",
+                                "lastName": "Diggs",
+                                "touchdowns": "20",
+                                "receptions": "147",
+                                "fumbles": "2",
+                                "position": "WR",
+                                "targets": "197",
+                                "yards": "1846"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/receiving/one
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/receiving/900
+    Expected Response Body: {
+                                "message": "Receiver not found"
+                            }
+
+Defense Table
+
+    Test 1: Correct Format
+    Request Type: Get
+    URL: localhost:5000/defense/1
+    Expected Response Body: {
+                                "ff": "2",
+                                "firstName": "T.J.",
+                                "lastName": "Watt",
+                                "position": "LB",
+                                "tackles": "53.0",
+                                "tfl": "24.0",
+                                "interceptions": "1",
+                                "sacks": "15.0"
+                            }
+
+    Test 2: Bad Request Body
+    Request Type: Get
+    URL: localhost:5000/defense/one
+    Expected Response Body: Database Error
+
+    Test 3: Player Does Not Exist
+    Request Type: Get
+    URl localhost:5000/defense/900
+    Expected Response Body: {
+                                "message": "Defender not found"
+                            }
+
+
+
