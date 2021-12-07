@@ -136,18 +136,23 @@ public class StatusEndpoints {
     public String createAPlayer(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
                                 @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
 
-        Players player = new Players();
-        player.setFirstName(hashMap.get("firstName"));
-        player.setLastName(hashMap.get("lastName"));
-        player.setTeam(hashMap.get("team"));
-        player.setPosition(hashMap.get("position"));
-        player.setGamesPlayed(Integer.parseInt(hashMap.get("gamesPlayed")));
+        try {
+            Players player = new Players();
+            player.setFirstName(hashMap.get("firstName"));
+            player.setLastName(hashMap.get("lastName"));
+            player.setTeam(hashMap.get("team"));
+            player.setPosition(hashMap.get("position"));
+            player.setGamesPlayed(Integer.parseInt(hashMap.get("gamesPlayed")));
 
-        Players p = playerRepository.save(player);
+            Players p = playerRepository.save(player);
 
-        Map<String, String> info = new HashMap<>();
-        info.put("playerId", p.getId().toString());
-        return objectWriter.writeValueAsString(info);
+            Map<String, String> info = new HashMap<>();
+            info.put("playerId", p.getId().toString());
+            return objectWriter.writeValueAsString(info);
+        }
+        catch (Exception e){
+            return "Database error";
+        }
     }
 
     @PostMapping(value = "/passing")
@@ -163,21 +168,26 @@ public class StatusEndpoints {
     public String createPassing(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
                                 @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
 
-        Passing passer = new Passing();
-        passer.setFirstName(hashMap.get("firstName"));
-        passer.setLastName(hashMap.get("lastName"));
-        passer.setPosition(hashMap.get("position"));
-        passer.setAttempts(Integer.parseInt(hashMap.get("attempts")));
-        passer.setCompletions(Integer.parseInt(hashMap.get("completions")));
-        passer.setYards(Integer.parseInt(hashMap.get("yards")));
-        passer.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
-        passer.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
+        try {
+            Passing passer = new Passing();
+            passer.setFirstName(hashMap.get("firstName"));
+            passer.setLastName(hashMap.get("lastName"));
+            passer.setPosition(hashMap.get("position"));
+            passer.setAttempts(Integer.parseInt(hashMap.get("attempts")));
+            passer.setCompletions(Integer.parseInt(hashMap.get("completions")));
+            passer.setYards(Integer.parseInt(hashMap.get("yards")));
+            passer.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
+            passer.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
 
-        Passing p = passingRepository.save(passer);
+            Passing p = passingRepository.save(passer);
 
-        Map<String, String> info = new HashMap<>();
-        info.put("passerId", p.getId().toString());
-        return objectWriter.writeValueAsString(info);
+            Map<String, String> info = new HashMap<>();
+            info.put("passerId", p.getId().toString());
+            return objectWriter.writeValueAsString(info);
+        }
+        catch (Exception e){
+            return "Database error";
+        }
     }
 
     @PostMapping(value = "/rushing")
@@ -192,7 +202,7 @@ public class StatusEndpoints {
     )
     public String createRushing(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
                                 @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
-
+        try{
         Rushing rusher = new Rushing();
         rusher.setFirstName(hashMap.get("firstName"));
         rusher.setLastName(hashMap.get("lastName"));
@@ -207,6 +217,10 @@ public class StatusEndpoints {
         Map<String, String> info = new HashMap<>();
         info.put("rusherId", r.getId().toString());
         return objectWriter.writeValueAsString(info);
+      }
+        catch (Exception e){
+            return "Database error";
+        }
     }
 
     @PostMapping(value = "/receiving")
@@ -222,21 +236,26 @@ public class StatusEndpoints {
     public String createReceiving(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
                                 @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
 
-        Receiving receiver = new Receiving();
-        receiver.setFirstName(hashMap.get("firstName"));
-        receiver.setLastName(hashMap.get("lastName"));
-        receiver.setPosition(hashMap.get("position"));
-        receiver.setReceptions(Integer.parseInt(hashMap.get("receptions")));
-        receiver.setTargets(Integer.parseInt(hashMap.get("targets")));
-        receiver.setYards(Integer.parseInt(hashMap.get("yards")));
-        receiver.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
-        receiver.setFumbles(Integer.parseInt(hashMap.get("fumbles")));
+        try {
+            Receiving receiver = new Receiving();
+            receiver.setFirstName(hashMap.get("firstName"));
+            receiver.setLastName(hashMap.get("lastName"));
+            receiver.setPosition(hashMap.get("position"));
+            receiver.setReceptions(Integer.parseInt(hashMap.get("receptions")));
+            receiver.setTargets(Integer.parseInt(hashMap.get("targets")));
+            receiver.setYards(Integer.parseInt(hashMap.get("yards")));
+            receiver.setTouchdowns(Integer.parseInt(hashMap.get("touchdowns")));
+            receiver.setFumbles(Integer.parseInt(hashMap.get("fumbles")));
 
-        Receiving r = receivingRepository.save(receiver);
+            Receiving r = receivingRepository.save(receiver);
 
-        Map<String, String> info = new HashMap<>();
-        info.put("receiverId", r.getId().toString());
-        return objectWriter.writeValueAsString(info);
+            Map<String, String> info = new HashMap<>();
+            info.put("receiverId", r.getId().toString());
+            return objectWriter.writeValueAsString(info);
+        }
+        catch (Exception e){
+            return "Database error";
+        }
     }
 
     @PostMapping(value = "/defense")
@@ -252,21 +271,26 @@ public class StatusEndpoints {
     public String createDefense(@ApiParam(name = "simpleObject", value = "Simple object", required = true)
                                   @RequestBody LinkedHashMap<String,String> hashMap) throws JsonProcessingException {
 
-        Defense defender = new Defense();
-        defender.setFirstName(hashMap.get("firstName"));
-        defender.setLastName(hashMap.get("lastName"));
-        defender.setPosition(hashMap.get("position"));
-        defender.setTackles(Double.parseDouble(hashMap.get("tackles")));
-        defender.setSacks(Double.parseDouble(hashMap.get("sacks")));
-        defender.setTfl(Double.parseDouble(hashMap.get("tfl")));
-        defender.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
-        defender.setFf(Integer.parseInt(hashMap.get("ff")));
+        try {
+            Defense defender = new Defense();
+            defender.setFirstName(hashMap.get("firstName"));
+            defender.setLastName(hashMap.get("lastName"));
+            defender.setPosition(hashMap.get("position"));
+            defender.setTackles(Double.parseDouble(hashMap.get("tackles")));
+            defender.setSacks(Double.parseDouble(hashMap.get("sacks")));
+            defender.setTfl(Double.parseDouble(hashMap.get("tfl")));
+            defender.setInterceptions(Integer.parseInt(hashMap.get("interceptions")));
+            defender.setFf(Integer.parseInt(hashMap.get("ff")));
 
-        Defense d = defenseRepository.save(defender);
+            Defense d = defenseRepository.save(defender);
 
-        Map<String, String> info = new HashMap<>();
-        info.put("defenderId", d.getId().toString());
-        return objectWriter.writeValueAsString(info);
+            Map<String, String> info = new HashMap<>();
+            info.put("defenderId", d.getId().toString());
+            return objectWriter.writeValueAsString(info);
+        }
+        catch (Exception e){
+            return "Database error";
+        }
     }
 
     @GetMapping(value = "/person/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
