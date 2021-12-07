@@ -291,11 +291,12 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/player/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/player/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getPlayer(@PathVariable String id) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
+    public ResponseEntity<String> getPlayer(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
+
+        Long idLong = Long.parseLong(firstName + lastName + position);
         Players players = playerRepository.findById(idLong).orElse(null);
 
         if (players != null) {
@@ -313,11 +314,11 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/rushing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/rushing/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getRushing(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getRushing(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
+        Long idLong = Long.parseLong(firstName + lastName + position);
         Rushing rusher = rushingRepository.findById(idLong).orElse(null);
         if (rusher != null) {
             Map<String, String> rushingMap = new HashMap<>();
@@ -336,11 +337,11 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/passing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/passing/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getPassing(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getPassing(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
+        Long idLong = Long.parseLong(firstName + lastName + position);
         Passing passer = passingRepository.findById(idLong).orElse(null);
 
         if (passer != null) {
@@ -361,11 +362,11 @@ public class StatusEndpoints {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
         }
     }
-    @GetMapping(value = "/defense/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/defense/firstName/{fname}/lastName/{lname}/position/{pos}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getdefense(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getdefense(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
+        Long idLong = Long.parseLong(firstName + lastName + position);
         Defense defender = defenseRepository.findById(idLong).orElse(null);
 
         if (defender != null) {
@@ -387,12 +388,28 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/receiving/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/receiving/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getreceiving(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getreceiving(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Receiving receiver = receivingRepository.findById(idLong).orElse(null);
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Receiving receiver = receivingRepository.findById(search).orElse(null);
+            if (receiver == null){
+                if ((receiver.getFirstName()).equals(firstName)){
+                    if ((receiver.getLastName()).equals(lastName)){
+                        if ((receiver.getPosition()).equals(position)){
+                            good = 1;}}}}
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Receiver not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Receiving receiver = receivingRepository.findById(search).orElse(null);
 
         if (receiver != null) {
             Map<String, String> receivingMap = new HashMap<>();
