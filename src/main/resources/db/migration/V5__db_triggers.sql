@@ -1,7 +1,7 @@
-DROP TRIGGER add_passing on passing;
-DROP TRIGGER add_receiving on receiving;
-DROP TRIGGER add_rushing on rushing;
-DROP TRIGGER add_defense on defense;
+DROP TRIGGER IF EXISTS add_passing on passing;
+DROP TRIGGER IF EXISTS add_receiving on receiving;
+DROP TRIGGER IF EXISTS add_rushing on rushing;
+DROP TRIGGER IF EXISTS add_defense on defense;
 
 CREATE OR REPLACE FUNCTION add_passing() RETURNS trigger AS $add_passing$
     BEGIN
