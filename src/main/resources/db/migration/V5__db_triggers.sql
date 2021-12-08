@@ -18,12 +18,13 @@ CREATE OR REPLACE FUNCTION add_passing() RETURNS trigger AS $add_passing$
 
         INSERT INTO
             players(first_name, last_name, position)
-            VALUES(NEW.f_name, NEW.l_name, NEW.pos);
-
+            VALUES(NEW.f_name, NEW.l_name, NEW.pos)
+            ON CONFLICT (first_name, last_name, position) DO NOTHING;
+        RETURN NEW;
     END;
 $add_passing$ LANGUAGE plpgsql;
 
-CREATE TRIGGER add_passing AFTER INSERT ON passing
+CREATE TRIGGER add_passing BEFORE INSERT ON passing
     FOR EACH ROW EXECUTE PROCEDURE add_passing();
 
 CREATE OR REPLACE FUNCTION add_rushing() RETURNS trigger AS $add_rushing$
@@ -41,12 +42,13 @@ CREATE OR REPLACE FUNCTION add_rushing() RETURNS trigger AS $add_rushing$
 
         INSERT INTO
             players(first_name, last_name, position)
-        VALUES(NEW.f_name, NEW.l_name, NEW.pos);
-
+            VALUES(NEW.f_name, NEW.l_name, NEW.pos)
+            ON CONFLICT (first_name, last_name, position) DO NOTHING;
+        RETURN NEW;
     END;
 $add_rushing$ LANGUAGE plpgsql;
 
-CREATE TRIGGER add_rushing AFTER INSERT ON rushing
+CREATE TRIGGER add_rushing BEFORE INSERT ON rushing
     FOR EACH ROW EXECUTE PROCEDURE add_rushing();
 
 CREATE OR REPLACE FUNCTION add_receiving() RETURNS trigger AS $add_receiving$
@@ -64,12 +66,13 @@ CREATE OR REPLACE FUNCTION add_receiving() RETURNS trigger AS $add_receiving$
 
         INSERT INTO
             players(first_name, last_name, position)
-        VALUES(NEW.f_name, NEW.l_name, NEW.pos);
-
+            VALUES(NEW.f_name, NEW.l_name, NEW.pos)
+            ON CONFLICT (first_name, last_name, position) DO NOTHING;
+        RETURN NEW;
     END;
 $add_receiving$ LANGUAGE plpgsql;
 
-CREATE TRIGGER add_receiving AFTER INSERT ON receiving
+CREATE TRIGGER add_receiving BEFORE INSERT ON receiving
     FOR EACH ROW EXECUTE PROCEDURE add_receiving();
 
 CREATE OR REPLACE FUNCTION add_defense() RETURNS trigger AS $add_defense$
@@ -87,10 +90,11 @@ CREATE OR REPLACE FUNCTION add_defense() RETURNS trigger AS $add_defense$
 
         INSERT INTO
             players(first_name, last_name, position)
-            VALUES(NEW.f_name, NEW.l_name, NEW.pos);
-
+            VALUES(NEW.f_name, NEW.l_name, NEW.pos)
+            ON CONFLICT (first_name, last_name, position) DO NOTHING;
+        RETURN NEW;
     END;
     $add_defense$ LANGUAGE plpgsql;
 
-CREATE TRIGGER add_defense AFTER INSERT ON defense
+CREATE TRIGGER add_defense BEFORE INSERT ON defense
     FOR EACH ROW EXECUTE PROCEDURE add_defense();
