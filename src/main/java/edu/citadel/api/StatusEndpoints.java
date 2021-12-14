@@ -1,5 +1,5 @@
 package edu.citadel.api;
-
+//1t should be working
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -315,12 +315,30 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/player/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/player/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getPlayer(@PathVariable String id) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Players players = playerRepository.findById(idLong).orElse(null);
+    public ResponseEntity<String> getPlayer(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
+
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Players players = playerRepository.findById(search).orElse(null);
+            if (players != null){
+                if ((players.getFirstName()).equals(firstName)){
+                    if ((players.getLastName()).equals(lastName)){
+                        if ((players.getPosition()).equals(position)){
+                            good = 1;}}}
+            }
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Player not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Players players = playerRepository.findById(search).orElse(null);
 
         if (players != null) {
             Map<String, String> playerMap = new HashMap<>();
@@ -337,12 +355,29 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/rushing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/rushing/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getRushing(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getRushing(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Rushing rusher = rushingRepository.findById(idLong).orElse(null);
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Rushing rusher = rushingRepository.findById(search).orElse(null);
+            if (rusher != null){
+                if ((rusher.getFirstName()).equals(firstName)){
+                    if ((rusher.getLastName()).equals(lastName)){
+                        if ((rusher.getPosition()).equals(position)){
+                            good = 1;}}}
+            }
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Rusher not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Rushing rusher = rushingRepository.findById(search).orElse(null);
         if (rusher != null) {
             Map<String, String> rushingMap = new HashMap<>();
             rushingMap.put("firstName", rusher.getFirstName());
@@ -360,12 +395,29 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/passing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/passing/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getPassing(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getPassing(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Passing passer = passingRepository.findById(idLong).orElse(null);
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Passing passer = passingRepository.findById(search).orElse(null);
+            if (passer != null){
+                if ((passer.getFirstName()).equals(firstName)){
+                    if ((passer.getLastName()).equals(lastName)){
+                        if ((passer.getPosition()).equals(position)){
+                            good = 1;}}}
+            }
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Passer not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Passing passer = passingRepository.findById(search).orElse(null);
 
         if (passer != null) {
             Map<String, String> passingMap = new HashMap<>();
@@ -385,12 +437,29 @@ public class StatusEndpoints {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
         }
     }
-    @GetMapping(value = "/defense/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/defense/firstName/{fname}/lastName/{lname}/position/{pos}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getdefense(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getdefense(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Defense defender = defenseRepository.findById(idLong).orElse(null);
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Defense defender = defenseRepository.findById(search).orElse(null);
+            if (defender != null){
+                if ((defender.getFirstName()).equals(firstName)){
+                    if ((defender.getLastName()).equals(lastName)){
+                        if ((defender.getPosition()).equals(position)){
+                            good = 1;}}}
+            }
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Receiver not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Defense defender = defenseRepository.findById(search).orElse(null);
 
         if (defender != null) {
             Map<String, String> defenseMap = new HashMap<>();
@@ -411,12 +480,29 @@ public class StatusEndpoints {
         }
     }
 
-    @GetMapping(value = "/receiving/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/receiving/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getreceiving(@PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<String> getreceiving(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String position) throws JsonProcessingException {
 
-        Long idLong = Long.parseLong(id);
-        Receiving receiver = receivingRepository.findById(idLong).orElse(null);
+        long search = 0;
+        int good = 0;
+
+        while(good == 0){
+            search = search + 1;
+            Receiving receiver = receivingRepository.findById(search).orElse(null);
+            if (receiver != null){
+                if ((receiver.getFirstName()).equals(firstName)){
+                    if ((receiver.getLastName()).equals(lastName)){
+                        if ((receiver.getPosition()).equals(position)){
+                            good = 1;}}}
+            }
+            else{
+                Map<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("message", "Receiver not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));}
+        }
+
+        Receiving receiver = receivingRepository.findById(search).orElse(null);
 
         if (receiver != null) {
             Map<String, String> receivingMap = new HashMap<>();
