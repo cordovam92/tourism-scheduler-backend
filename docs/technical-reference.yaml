@@ -17,6 +17,79 @@ tags:
 - name: "status-endpoints"
   description: "Status Endpoints"
 paths:
+  /defense:
+    post:
+      tags:
+      - "status-endpoints"
+      summary: "Adds defensive stats"
+      operationId: "createDefenseUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "simpleObject"
+        description: "Simple object"
+        required: true
+        schema:
+          type: "object"
+          additionalProperties:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "The resource was not found"
+        "422":
+          description: "Cannot process request"
+        "500":
+          description: "Database error"
+  /defense/firstName/{fname}/lastName/{lname}/position/{pos}:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "getdefense"
+      operationId: "getdefenseUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "firstName"
+        in: "path"
+        description: "firstName"
+        required: true
+        type: "string"
+      - name: "lastName"
+        in: "path"
+        description: "lastName"
+        required: true
+        type: "string"
+      - name: "position"
+        in: "path"
+        description: "position"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
   /health:
     get:
       tags:
@@ -59,7 +132,7 @@ paths:
     post:
       tags:
       - "status-endpoints"
-      summary: "Creates a passing object"
+      summary: "Adds passing stats"
       operationId: "createPassingUsingPOST"
       consumes:
       - "application/json"
@@ -93,7 +166,7 @@ paths:
           description: "Cannot process request"
         "500":
           description: "Database error"
-  /passing/{id}:
+  /passing/firstName/{firstName}/lastName/{lastName}/position/{position}:
     get:
       tags:
       - "status-endpoints"
@@ -102,9 +175,19 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "firstName"
         in: "path"
-        description: "id"
+        description: "firstName"
+        required: true
+        type: "string"
+      - name: "lastName"
+        in: "path"
+        description: "lastName"
+        required: true
+        type: "string"
+      - name: "position"
+        in: "path"
+        description: "position"
         required: true
         type: "string"
       responses:
@@ -179,12 +262,90 @@ paths:
           description: "Forbidden"
         "404":
           description: "Not Found"
-  /player/{id}:
+  /place:
     get:
       tags:
       - "status-endpoints"
-      summary: "getPlayer"
-      operationId: "getPlayerUsingGET"
+      summary: "getAllPlaces"
+      operationId: "getAllPlacesUsingGET"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/IterableÂ«PlaceÂ»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /place/search:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "search"
+      operationId: "searchUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "subtype"
+        in: "query"
+        description: "subtype"
+        required: true
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "type"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Place"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /place/search2:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "search"
+      operationId: "searchUsingGET_1"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "type"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Place"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+  /place/{id}:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "getPlace"
+      operationId: "getPlaceUsingGET"
       produces:
       - "application/json"
       parameters:
@@ -204,11 +365,46 @@ paths:
           description: "Forbidden"
         "404":
           description: "Not Found"
+  /player/firstName/{firstName}/lastName/{lastName}/position/{position}:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "getPlayer"
+      operationId: "getPlayerUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "firstName"
+        in: "path"
+        description: "firstName"
+        required: true
+        type: "string"
+      - name: "lastName"
+        in: "path"
+        description: "lastName"
+        required: true
+        type: "string"
+      - name: "position"
+        in: "path"
+        description: "position"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
   /players:
     post:
       tags:
       - "status-endpoints"
-      summary: "Creates a player object"
+      summary: "Adds a player to the database"
       operationId: "createAPlayerUsingPOST"
       consumes:
       - "application/json"
@@ -242,11 +438,84 @@ paths:
           description: "Cannot process request"
         "500":
           description: "Database error"
+  /receiving:
+    post:
+      tags:
+      - "status-endpoints"
+      summary: "Adds receiving stats"
+      operationId: "createReceivingUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "simpleObject"
+        description: "Simple object"
+        required: true
+        schema:
+          type: "object"
+          additionalProperties:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "The resource was not found"
+        "422":
+          description: "Cannot process request"
+        "500":
+          description: "Database error"
+  /receiving/firstName/{firstName}/lastName/{lastName}/position/{position}:
+    get:
+      tags:
+      - "status-endpoints"
+      summary: "getreceiving"
+      operationId: "getreceivingUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "firstName"
+        in: "path"
+        description: "firstName"
+        required: true
+        type: "string"
+      - name: "lastName"
+        in: "path"
+        description: "lastName"
+        required: true
+        type: "string"
+      - name: "position"
+        in: "path"
+        description: "position"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
   /rushing:
     post:
       tags:
       - "status-endpoints"
-      summary: "Creates a rushing object"
+      summary: "Adds rushing stats"
       operationId: "createRushingUsingPOST"
       consumes:
       - "application/json"
@@ -280,7 +549,7 @@ paths:
           description: "Cannot process request"
         "500":
           description: "Database error"
-  /rushing/{id}:
+  /rushing/firstName/{firstName}/lastName/{lastName}/position/{position}:
     get:
       tags:
       - "status-endpoints"
@@ -289,9 +558,19 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "firstName"
         in: "path"
-        description: "id"
+        description: "firstName"
+        required: true
+        type: "string"
+      - name: "lastName"
+        in: "path"
+        description: "lastName"
+        required: true
+        type: "string"
+      - name: "position"
+        in: "path"
+        description: "position"
         required: true
         type: "string"
       responses:
@@ -342,6 +621,9 @@ paths:
         "422":
           description: "Cannot process request"
 definitions:
+  IterableÂ«PlaceÂ»:
+    type: "object"
+    title: "IterableÂ«PlaceÂ»"
   Message:
     type: "object"
     properties:
@@ -417,3 +699,46 @@ definitions:
       endpoint:
         type: "string"
     title: "PhoneNumber"
+  Place:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+      averageTime:
+        type: "string"
+      fridayHours:
+        type: "string"
+      id:
+        type: "integer"
+        format: "int32"
+      mondayHours:
+        type: "string"
+      name:
+        type: "string"
+      numOfReviews:
+        type: "integer"
+        format: "int32"
+      priceLevel:
+        type: "string"
+      rating:
+        type: "number"
+        format: "float"
+      saturdayHours:
+        type: "string"
+      subType:
+        type: "string"
+      subType2:
+        type: "string"
+      subType3:
+        type: "string"
+      sundayHours:
+        type: "string"
+      thursdayHours:
+        type: "string"
+      tuesdayHours:
+        type: "string"
+      type:
+        type: "string"
+      wednesdayHours:
+        type: "string"
+    title: "Place"

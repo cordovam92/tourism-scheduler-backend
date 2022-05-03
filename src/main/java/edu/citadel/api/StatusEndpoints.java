@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Endpoint for determining the status and API information. These endpoints are not included
@@ -47,17 +48,20 @@ public class StatusEndpoints {
     private final RushingRepository rushingRepository;
     private final ReceivingRepository receivingRepository;
     private final DefenseRepository defenseRepository;
+    private final PlaceRepository placeRepository;
 
     @Autowired
     public StatusEndpoints(@NonNull PersonRepository personRepository, @NonNull PlayerRepository playerRepository,
                            @NonNull PassingRepository passingRepository, @NonNull RushingRepository rushingRepository,
-                           @NonNull ReceivingRepository receivingRepository, @NonNull DefenseRepository defenseRepository) {
+                           @NonNull ReceivingRepository receivingRepository, @NonNull DefenseRepository defenseRepository,
+                           @NonNull PlaceRepository placeRepository) {
         this.personRepository = personRepository;
         this.playerRepository = playerRepository;
         this.passingRepository = passingRepository;
         this.rushingRepository = rushingRepository;
         this.receivingRepository = receivingRepository;
         this.defenseRepository = defenseRepository;
+        this.placeRepository = placeRepository;
     }
 
     private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -313,6 +317,55 @@ public class StatusEndpoints {
             errorMessage.put("message", "Person not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
         }
+    }
+
+    @GetMapping(value = "/place/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> getPlace(@PathVariable String id) throws JsonProcessingException {
+
+        Integer idInt = Integer.parseInt(id);
+        Place place = placeRepository.findById(idInt).orElse(null);
+
+        if (place != null) {
+            Map<String, String> placeMap = new HashMap<>();
+            placeMap.put("name", place.getName());
+            placeMap.put("rating", String.valueOf(place.getRating()));
+            placeMap.put("numofreviews", String.valueOf(place.getNumOfReviews()));
+            placeMap.put("address", place.getAddress());
+            placeMap.put("sundayhours", place.getSundayHours());
+            placeMap.put("mondayhours", place.getMondayHours());
+            placeMap.put("tuesdayhours", place.getTuesdayHours());
+            placeMap.put("wednesdayhours", place.getWednesdayHours());
+            placeMap.put("thursdayhours", place.getThursdayHours());
+            placeMap.put("fridayhours", place.getFridayHours());
+            placeMap.put("saturdayhours", place.getSaturdayHours());
+            placeMap.put("type", place.getType());
+            placeMap.put("subtype", place.getSubType());
+            placeMap.put("subtype2", place.getSubType2());
+            placeMap.put("subtype3", place.getSubType3());
+            placeMap.put("pricelevel", place.getPriceLevel());
+            placeMap.put("averagetime", place.getAverageTime());
+            return ResponseEntity.status(HttpStatus.OK).body(objectWriter.writeValueAsString(placeMap));
+        } else {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("message", "Place not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectWriter.writeValueAsString(errorMessage));
+        }
+    }
+
+    @GetMapping(value = "/place", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Iterable<Place> getAllPlaces() {
+        return placeRepository.findAll();
+    }
+
+    @GetMapping(value = "/place/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Place> search(@RequestParam String type, @RequestParam String subtype){
+        return placeRepository.findByTypeContainingOrSubtypeContaining(type, subtype);
+    }
+
+    @GetMapping(value = "/place/search2", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Place> search(@RequestParam String type) {
+        return placeRepository.findByTypeContaining(type);
     }
 
     @GetMapping(value = "/player/firstName/{firstName}/lastName/{lastName}/position/{position}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,13 +1,15 @@
-version: '3.1'
+version: '3.3'
 
 services:
-  nfl-helper-database:
-    image: postgres:9.6
+  tourism-scheduler-database:
+    image: mysql:8.0.28
     restart: always
     environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
-      POSTGRES_DB: testdb
+      MYSQL_DATABASE: 'testdb2'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'mitoro1992'
     ports:
-      - "5433:5432"
-    container_name: nfl-helper-database
+      - '3306:3306'
+    expose:
+      - '3306'
+    container_name: tourism-scheduler

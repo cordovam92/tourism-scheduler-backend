@@ -40,7 +40,7 @@ You should see a success if everything is set up correctly.
 ./mvnw spring-boot:run
 ```
 
-Access the API by visiting [http://localhost:5000/swagger-ui/index.html](http://localhost:5000/swagger-ui/index.html). From there you can hit the endpoints directly.
+Access the API by visiting [http://localhost:8080/swagger-ui/index.html](http://localhost:5000/swagger-ui/index.html). From there you can hit the endpoints directly.
 
 7.) Success!
 
